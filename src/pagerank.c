@@ -64,11 +64,8 @@
 			Res[i] = 0.0;
 		}
 		//Etape 2
-			//multiplication(tabSommet,sommet,vec,Res);
 		multiplication_xG(tabSommet, sommet, vec, Res, alpha, f_t, e);
 		for(int i = 0;i<sommet;i++){vec[i] = Res[i];}
-	for(int i = 0 ; i < sommet ; i++) {printf(" %lf ",Res[i]);}
-		printf("\n");
 		j++;
 	}while(compare(res_1,Res,sommet,precision));
 
@@ -80,16 +77,15 @@
 
 		printf("nbr iteration = %d",j);
 		
-	//max(F,sommet);
 		t2 = clock();
 		printf("time : %ld",(t2-t1)/CLOCKS_PER_SEC);
 	free(Res);
-	//free(tabSommet);
 	free(e);
 	free(vec);
 	free(liste_succ);
 	free(res_1);
 	free(f_t);
 	free(tabSommet);
+	fclose(F);
   return 0;
 }
