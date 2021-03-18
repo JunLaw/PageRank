@@ -55,8 +55,8 @@
  		printf("%lf\n",vec[0]);
 	int *liste_succ = malloc(sommet*sizeof(int));
 
-	//read_txt(f_t,tabSommet,sommet,F,liste_succ);
-	/*
+	read_txt(f_t,tabSommet,sommet,F,liste_succ);
+	
 	do
 	{
 		//Etape 1
@@ -79,8 +79,8 @@
 		printf("\n");
 
 		printf("nbr iteration = %d",j);
-		*/
-	max(F,sommet);
+		
+	//max(F,sommet);
 		t2 = clock();
 		printf("time : %ld",(t2-t1)/CLOCKS_PER_SEC);
 	free(Res);
