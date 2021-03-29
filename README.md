@@ -1,6 +1,7 @@
-# PageRank-Currently-Building-
-#
-#
+# PaeRank-Currently-Building-
+##An efficient and linear complexity reading of a sparse matrix
+##A Google computation of pagerank based on xG = alpha * x * P + [(1-alpha)(1/N) + alpha * (1/N)(x * f^t)]e 
+###alpha = initial scalar, N = number of vertices, f^t = dangling node speification vector, e = the 1 column vector
 ## Compilation
 Using Makefile type
 
