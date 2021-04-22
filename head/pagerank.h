@@ -20,5 +20,10 @@ typedef struct sommet{
 
 }Sommet;
 
+typedef struct vector{
+	int val;
+	double cout;
+}Vector;
+
 
 #endif

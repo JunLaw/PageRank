@@ -45,11 +45,98 @@ void insert(Sommet *s1,Sommet *s2){
 }
 
 //assignation des sommets predecesseurs au sommet
-void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F,int *liste_succ)
+void read_txt_(Sommet *tabSommet,int sommet,FILE *F,int *k)
+{
+	int n;
+	int dangling_node = 0;
+	int numsommet,nbrsucc,num;		
+	
+
+	double prob;
+	
+	 for(int i = 0; i< sommet; i++){
+	 	Sommet *tmp = malloc(sizeof(Sommet));
+	 	tmp->val = i+1;
+	 	tmp->pred = NULL;
+	 	tmp->cout = 0.0;
+	 	tabSommet[i] = *tmp;
+
+	 }
+
+	 for(int i = 0; i < sommet; i ++)
+	 {
+
+		char *ctmp = malloc (630000* sizeof(char));
+		char *memCtmp = ctmp;
+	 	fgets(ctmp,630000,F);
+		
+	 	sscanf(ctmp,"%d %d %n",&numsommet,&nbrsucc,&n);
+	 	//printf("num = %d, nbrsucc = %d\n",numsommet,nbrsucc);
+	 	ctmp += n;
+
+	 	
+	 	if(nbrsucc == 0)
+	 	{
+	 		*k = *k - 1;
+	 		dangling_node++;
+	 		Sommet tmp = tabSommet[numsommet-1];
+	 		tabSommet[numsommet-1] = tabSommet[*k];
+	 		tabSommet[*k] = tmp;
+	 		free(memCtmp);
+	 		continue;
+	 	}
+
+	 	//Etape 3
+	 	for(int j = 0; j < nbrsucc;j++)
+	 	{
+	 		sscanf(ctmp," %d %lf %n",&num,&prob,&n);
+	 		//printf("%d, %lf ",num,prob);
+	 			if( (num <= sommet) )
+	 			{
+	 				Sommet *atmp = malloc(sizeof(Sommet));
+	 				atmp->cout = prob;
+	 				atmp->val = i+1;
+	 				atmp->pred = NULL;
+	 				int zed = 0;
+	 				int cpt = 0;
+	 				//printf("num = %d\n",num);
+	 				while( (zed == 0) || (cpt <= sommet)){
+	 					if(tabSommet[cpt].val == num){
+	 						//printf("%d\n",cpt);
+	 						zed = 1;
+	 						break;
+	 					}
+	 					cpt++;
+	 				}
+	 				insert(&tabSommet[cpt],atmp);
+	 				
+	 			}
+	 				ctmp += n;
+	 	}
+	 	free(memCtmp);
+	 	//printf("\n");
+	 }
+	/*
+	 printf("number of dangling node = %d\n",dangling_node);
+	 printf("number of non dangling node = %d\n",*k);
+	 for(int i = 0;i<sommet;i++){
+	 	printf("%d ----->  ",tabSommet[i].val);
+	 	Sommet *tmp = (&tabSommet[i])->pred;
+	 	while(tmp != NULL){
+	 		printf("%d -> %lf ",tmp->val,tmp->cout);
+	 		tmp = tmp->pred;
+	 	}
+	 	printf("\n");
+	 }
+	 */
+
+}
+
+
+void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F)
 {
 	int n;
 	int numsommet,nbrsucc,num;
-
 	double prob;
 	 for(int i = 0; i< sommet; i++){
 	 	Sommet *tmp = malloc(sizeof(Sommet));
@@ -62,17 +149,13 @@ void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F,int *liste_succ)
 	 for(int i = 0; i < sommet; i ++)
 	 {
 
-		char *ctmp = malloc (300000* sizeof(char));
+		char *ctmp = malloc (630000* sizeof(char));
 		char *memCtmp = ctmp;
-	 	fgets(ctmp,300000,F);
-	
+	 	fgets(ctmp,630000,F);
 	 	sscanf(ctmp,"%d %d %n",&numsommet,&nbrsucc,&n);
-	 	//printf("nums = %d,nbrsucc = %d\n",numsommet,nbrsucc);
-	 	liste_succ[i] = nbrsucc;
+	 	//printf("num = %d, nbrsucc = %d\n",numsommet,nbrsucc);
 	 	ctmp += n;
-
-	 	
-	 	if(nbrsucc ==0)
+	 	if(nbrsucc == 0)
 	 	{
 	 		f_t[i] = 1.0;
 	 		free(memCtmp);
@@ -81,13 +164,12 @@ void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F,int *liste_succ)
 	 	{
 	 		f_t[i] = 0.0;
 	 	}
-
+	 	
 
 	 	//Etape 3
 	 	for(int j = 0; j < nbrsucc;j++)
 	 	{
 	 		sscanf(ctmp," %d %lf %n",&num,&prob,&n);
-	 			//printf("num = %d prob = %lf\n ",num,prob);
 
 	 			if( (num <= sommet) )
 	 			{
@@ -96,7 +178,7 @@ void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F,int *liste_succ)
 	 				atmp->val = i+1;
 	 				atmp->pred = NULL;
 	 				insert(&tabSommet[num-1],atmp);
-	 				//free(atmp);
+	 				
 	 			}
 	 				ctmp += n;
 	 	}
@@ -104,7 +186,20 @@ void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F,int *liste_succ)
 	 	
 	 }
 
+	 /*
+	 for(int i = 0;i<sommet;i++){
+	 	printf("%d ----->  ",tabSommet[i].val);
+	 	Sommet *tmp = (&tabSommet[i])->pred;
+	 	while(tmp != NULL){
+	 		printf("%d -> %lf ",tmp->val,tmp->cout);
+	 		tmp = tmp->pred;
+	 	}
+	 	printf("\n");
+	 }
+	 */
 }
+
+
 
 void max(FILE *F,int nbrsommet){
 	int max = 0;
