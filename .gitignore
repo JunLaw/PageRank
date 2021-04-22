@@ -1,3 +1,4 @@
 /graph/*.txt
-*.o
-*.tar
+/*.o
+/*.tar
+pagerank
