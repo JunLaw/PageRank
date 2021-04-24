@@ -133,9 +133,11 @@ void read_txt_(Sommet *tabSommet,int sommet,FILE *F,int *k)
 }
 
 
-void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F)
+int read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F,int *liste)
 {
 	int n;
+	int cpt = 0;
+	int j = 0;
 	int numsommet,nbrsucc,num;
 	double prob;
 	 for(int i = 0; i< sommet; i++){
@@ -148,7 +150,7 @@ void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F)
 
 	 for(int i = 0; i < sommet; i ++)
 	 {
-
+	 	
 		char *ctmp = malloc (630000* sizeof(char));
 		char *memCtmp = ctmp;
 	 	fgets(ctmp,630000,F);
@@ -158,6 +160,9 @@ void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F)
 	 	if(nbrsucc == 0)
 	 	{
 	 		f_t[i] = 1.0;
+	 		cpt++;
+	 		liste[j] = numsommet;
+	 		j++;
 	 		free(memCtmp);
 	 		continue;
 	 	}else
@@ -197,6 +202,8 @@ void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F)
 	 	printf("\n");
 	 }
 	 */
+	 liste[cpt] = -1; 
+	 return cpt;
 }
 
 

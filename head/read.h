@@ -5,7 +5,7 @@
 
 int check_url(const char *str_check);
 //assignation des sommets predecesseurs au sommet
-void read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F);
+int read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F,int *liste);
 
 void read_txt_(Sommet *tabSommet,int sommet,FILE *F,int *k);
 
