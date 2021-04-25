@@ -15,7 +15,28 @@
  	double precision = 0.0;
  	int j = 0;
 	char *str = "./graph/";
- 		//printf("ok");
+	/*
+ 	char name[1000] = "";
+ 	printf("Choose a file to be computed. Here are file available\n");
+ 	system("ls graph/");
+ 	int a = scanf("%s",name);
+ 	printf("%s",name);
+ 	if(!check_url(name)){
+ 		char *str_g = malloc(sizeof(char) * strlen(str) + strlen(name));
+ 		strcpy(str_g,str);
+ 		strcat(str_g,name);
+ 		if(!(F = fopen(str_g,"r"))){return 1;}
+ 		printf("enter precision of convergence\n");
+ 		int b = scanf("%lf",&precision);
+ 		printf("\nenter alpha\n");
+ 		int c = scanf("%lf",&alpha);
+ 		free(str_g);
+
+ 	}else{
+ 		printf("name not correct");
+ 		return 1;
+ 	}
+ 	*/
  	if (argc == 4 && !check_url(argv[1])){
  		char *str_g = malloc(sizeof(char) * strlen(str) + strlen(argv[1]));
  		strcpy(str_g,str);
@@ -49,8 +70,9 @@
  	double *vec = malloc(sommet*sizeof(double));
  	//printf("ok");
  	
-	Sommet *H12 = NULL;
+
  	int *liste = malloc(sommet*sizeof(int));
+ 	for(int i = 0;i<sommet;i++){liste[i] = 0;}
 
  	int tmp = sommet;
  	int *k = &tmp;
@@ -60,60 +82,85 @@
 	t3 = clock();
 	printf("Read time : %ld\n",(t3-t1)/CLOCKS_PER_SEC);
 
-	Vector *theta = malloc((sommet-cpt)*sizeof(Vector));
-	Vector *w1 = malloc((sommet-cpt)*sizeof(Vector));
-	Vector *v1 = malloc((sommet-cpt)*sizeof(Vector));
-	for(int i = 0;i<(sommet-cpt);i++){
+	Vector *theta = malloc(sommet*sizeof(Vector));
+	for(int i = 0;i<sommet;i++){
+		theta[i].val = i+1;
+		theta[i].cout = 0.0;
+	}
+	Vector *w1 = malloc(sommet*sizeof(Vector));
+	Vector *v1 = malloc(sommet*sizeof(Vector));
+	int y = 0;
+	for(int i = 0;i<sommet;i++){
+		if(liste[y]-1 == i){
+			//printf("dangling node");
+			//printf("liste = %d",liste[y]);
+			y++;
+			w1[i].cout =0.0;
+			w1[i].val = tabSommet[i].val;
+			v1[i].cout = 0.0;
+			v1[i].val = tabSommet[i].val;
+		}else{
 		w1[i].cout = (double) (1.0 / (double) (sommet) );
 		w1[i].val = tabSommet[i].val;
 		v1[i].cout = (double) (1.0 / (double) (sommet) );
 		v1[i].val = tabSommet[i].val;
+		}
 	}
 	
-	Vector *w2 = malloc(cpt*sizeof(Vector));
-	Vector *v2 = malloc(cpt*sizeof(Vector));
+	Vector *w2 = malloc(sommet*sizeof(Vector));
+	Vector *v2 = malloc(sommet*sizeof(Vector));
 	
-	
-	for(int i = 0;i<cpt;i++){
+	int z = 0;
+	for(int i = 0;i<sommet;i++){
 
+		if(liste[z]-1 == i){
 		w2[i].cout = (double) (1.0 / (double) (sommet) );
 		w2[i].val = tabSommet[i].val;
 		v2[i].cout = (double) (1.0 / (double) (sommet) );
 		v2[i].val = tabSommet[i].val;
-	}
-
-	
-	
-
-	Sommet *H11 = NULL;
-	H11 = malloc((sommet-cpt)*sizeof(Sommet));
-	H12 = malloc(cpt*sizeof(Sommet));
-	int cptH12 = 0;
-	int cptH11 = 0;
-	int cc = 0;
-	for(int i = 0;i<sommet;i++){
-		if(liste[cc] == tabSommet[i].val){
-			H12[cptH12] = tabSommet[i];
-			cc++;
-			cptH12++;
-			//va dans H12
+		z++;
 		}else{
-			H11[cptH11] = tabSommet[i];
-			theta[cptH11].val = tabSommet[i].val;
-			theta[cptH11].cout = (double) (1.0 / (double) (sommet-cpt+1) );
-			cptH11++;
-			//va dans H11
+			w2[i].cout =0.0;
+			w2[i].val = tabSommet[i].val;
+			v2[i].cout = 0.0;
+			v2[i].val = tabSommet[i].val;
 		}
-	
 	}
+
+	int x = 0;
+	for(int i = 0;i<sommet;i++){
+
+		if(liste[x] == theta[i].val){
+				theta[i].cout = 0.0;
+				x++;
+
+		}else{
+			//printf("liste[%d] = %d 		",i,liste[i]);
+				//printf("theta[%d].val = %d\n",i,theta[i].val);
+				theta[i].cout = (double) (1.0 / (double) (sommet));
+				
+		}
+	}
+
+
+
 	
 	
-	double theta_k_1_tmp = (double) (1.0 / (double) ((*k)+1) );
+	double theta_k_1_tmp = (double) (1.0 / (double) (sommet) );
 	double *theta_k_1 = &theta_k_1_tmp;
-	Vector *res_w1 = malloc((sommet-cpt)*sizeof(Vector));
-	Vector *res_v1 = malloc((sommet-cpt)*sizeof(Vector));
+	Vector *res_w1 = malloc(sommet*sizeof(Vector));
+	Vector *res_v1 = malloc(sommet*sizeof(Vector));
 	double *last = malloc(sommet*sizeof(double));
-	last = multiplication_dangling_version(w1,w2,v1,v2,theta,alpha,sommet,sommet-cpt,H11,H12,e,res_w1,res_v1,theta_k_1,precision,liste);
+	/* for(int i = 0;i<sommet;i++){
+	 	printf("%d ----->  ",tabSommet[i].val);
+	 	Sommet *tmp = (&tabSommet[i])->pred;
+	 	while(tmp != NULL){
+	 		printf("%d -> %lf ",tmp->val,tmp->cout);
+	 		tmp = tmp->pred;
+	 	}
+	 	printf("\n");
+	 }*/
+	last = multiplication_dangling_version(w1,w2,v1,v2,theta,alpha,sommet,sommet-cpt,tabSommet,tabSommet,e,res_w1,res_v1,theta_k_1,precision,liste);
 	/*
 	for(int i = 0;i<sommet;i++){
 		printf("last[%d] = %f\n",i,last[i]);

@@ -22,6 +22,7 @@ typedef struct sommet{
 
 typedef struct vector{
 	int val;
+	int ind;
 	double cout;
 }Vector;
 

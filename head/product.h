@@ -21,7 +21,7 @@ void multiplication_xG(Sommet * Matrice, int nb_sommet, double * Vecteur,double 
 double* multiplication_dangling_version(Vector *w1,Vector *w2,Vector *v1,Vector *v2,Vector *theta,double alpha,int n,int k,Sommet *H11,Sommet *H12,double *e,Vector *res_w1,Vector *res_v1,double *theta_k_1,double precision,int *liste);
 
 
-void mult_dangling(Sommet *Matrice,int nb_sommet,Vector *Vecteur,double *Res,int *liste);
+void mult_dangling(Sommet *Matrice,int nb_sommet,Vector *Vecteur,double *Res,int *liste,int on);
 
 
 
