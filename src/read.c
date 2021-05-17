@@ -151,9 +151,9 @@ int read_txt(double *f_t,Sommet *tabSommet,int sommet,FILE *F,int *liste)
 	 for(int i = 0; i < sommet; i ++)
 	 {
 	 	
-		char *ctmp = malloc (630000* sizeof(char));
+		char *ctmp = malloc (1300000* sizeof(char));
 		char *memCtmp = ctmp;
-	 	fgets(ctmp,630000,F);
+	 	fgets(ctmp,1300000,F);
 	 	sscanf(ctmp,"%d %d %n",&numsommet,&nbrsucc,&n);
 	 	//printf("num = %d, nbrsucc = %d\n",numsommet,nbrsucc);
 	 	ctmp += n;

@@ -185,13 +185,14 @@ int main(int argc,char **argv){
 	Vector *res_w1 = malloc(sommet*sizeof(Vector));
 	Vector *res_v1 = malloc(sommet*sizeof(Vector));
 	double *last = malloc(sommet*sizeof(double));
-	
+	t3 = clock();
 	last = multiplication_dangling_version(w1,w2,v1,v2,theta,alpha,sommet,sommet-cpt,tabSommet,tabSommet,e,res_w1,res_v1,theta_k_1,precision,liste,q);
+	t2 = clock();
 	//printf("q= %d",*q);
 	FILE *fic = fopen("vec1.txt","w+");		
 	for(int i = 0 ; i < sommet ; i++) {fprintf(fic," %f ",last[i]);}
-	t2 = clock();
-	printf("Pagerank time : %ld\n",(t2-t1)/CLOCKS_PER_SEC);
+	
+	printf("Pagerank time : %ld\n",(t2-t3)/CLOCKS_PER_SEC);
 	
 	}else if(s == 1){
 	// Normal Pagerank
